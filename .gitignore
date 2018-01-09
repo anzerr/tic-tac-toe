@@ -1,0 +1,9 @@
+.idea/
+client/web/node_modules
+client/web/node_modules/*
+client/web/macro/node_modules
+client/web/macro/node_modules/*
+server/debug.log
+
+*.o
+*.exe
