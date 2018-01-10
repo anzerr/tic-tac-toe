@@ -5,108 +5,64 @@ int charToInt(char c) {
 }
 
 void displayGame(t_core *core) {
-    int player[10][10];
-    int i, y;
-
-    i = 0;
-    while (i < 10) {
-        y = 0;
-        while (y < 10) {
-            player[i][y] = 0;
-
-            y += 1;
-        }
-        i += 1;
-    }
-
-    i = 0;
-    while (i < 4) {
-        player[core->player[i].y][core->player[i].x] = (core->player[i].dead)? 0 : i + 1;
-        i += 1;
-    }
+    int x, y;
 
     write(1, "\033[H\0", 5);
     write(1, "\033[2J\0", 5);
-    my_putstr("-----------------------\n");
-    i = 0;
-    while (i < 10) {
+    write(1, (core->id == core->turn) ? "\x1b[32m" : "\x1b[31m", 5);
+    my_putstr("\n---\n");
+    x = 0;
+    while (x < MAP_SIZE) {
         y = 0;
-        my_putstr("|");
-        while (y < 10) {
-            if (player[i][y]) {
-                if (player[i][y] == 1) {
-                    write(1, "\033[31m", 6);
-                }
-                if (player[i][y] == 2) {
-                    write(1, "\033[32m", 6);
-                }
-                if (player[i][y] == 3) {
-                    write(1, "\033[33m", 6);
-                }
-                if (player[i][y] == 4) {
-                    write(1, "\033[34m", 6);
-                }
-                write(1, " #\033[0m\0", 7);
+        while (y < MAP_SIZE) {
+            if (core->map[x][y]) {
+                my_putstr((core->map[x][y] == 1) ? "x" : "o");
             } else {
-                if (core->map[i][y] == 0) {
-                    my_putstr(" 0");
-                } else if (core->map[i][y] == 1) {
-                    my_putstr(" 1");
-                } else if (core->map[i][y] == 2) {
-                    my_putstr("  ");
-                } else {
-                    if (core->map[i][y] < 10) {
-                        my_putstr(" ~");
-                    }
-                    if (core->map[i][y] > 10) {
-                        my_putstr(" @");
-                    }
-                }
+                my_putstr(" ");
             }
-
             y += 1;
         }
-        my_putstr(" |\n");
-        i += 1;
+        my_putstr("\n");
+        x += 1;
     }
-    my_putstr("-----------------------\n");
+    my_putstr("---\n");
 }
 
 void runGamePacket(t_core *core, char *pack) {
-    char buffer[4096], tmp[10];
-    int i, x, y, t, p;
+    char buffer[4096];
+    int i, x, y, size;
+    char **tab;
+
+    my_putstr(pack);
+    my_putstr("\n");
 
     my_memset(buffer, 0, 4096);
     i = (x = 0);
     while (pack[i - 1] != '\0' || (i == 0 && pack[i] != '\0')) {
         if (pack[i] == ';' || pack[i] == '\0') {
-            if (buffer[0] == 'p') {
-                y = charToInt(buffer[2]);
-                core->player[y].dead = charToInt(buffer[9]);
-                core->player[y].y = charToInt(buffer[11]);
-                core->player[y].x = charToInt(buffer[13]);
-            }
             if (buffer[0] == 'm') {
-                y = 5;
-                p = (t = 0);
-                my_memset(tmp, 0, 10);
-                while (buffer[y - 1] != '\0') {
-                    if (buffer[y] == ',' || buffer[y] == '\0') {
-                        core->map[p / 10][p % 10] = my_getnbr(tmp);
-                        my_memset(tmp, 0, 10);
-                        p += 1;
-                        t = 0;
-                    } else {
-                        tmp[t] = buffer[y];
-                        t += 1;
-                    }
+                tab = my_str_to_wordtab(buffer);
+                y = 0;
+                size = my_getnbr(tab[1]);
+                while (tab[y + 2]) {
+                    core->map[(int)(y / size)][y % size] = my_getnbr(tab[y + 2]);
                     y += 1;
                 }
             }
-            if (buffer[0] == 'e') {
-                my_putstr("closing someone won lol\n");
+            if (buffer[0] == 't') {
+                core->turn = buffer[2] - 48;
+                my_putstr("turn: ");
+                my_putstr(my_nbrtostr(core->turn));
+                my_putstr("\n");
+            }
+            if (buffer[0] == 'w') {
                 core->running = 0;
-                break;
+            }
+            if (buffer[0] == 'i') {
+                core->id = buffer[2] - 48;
+                my_putstr("id: ");
+                my_putstr(my_nbrtostr(core->id));
+                my_putstr("\n");
             }
 
             my_memset(buffer, 0, 4096);
@@ -117,6 +73,7 @@ void runGamePacket(t_core *core, char *pack) {
         }
         i += 1;
     }
+
     if (core->running) {
         displayGame(core);
     }

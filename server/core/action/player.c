@@ -9,6 +9,7 @@ int playerTurn(t_core *core, int key, int x, int y) {
     if (core->game->players[key] && core->game->turn == key) {
         if (inMap(core, x) && inMap(core, y) && core->game->map[x][y] == 0) {
             core->game->map[x][y] = key + 1;
+            core->game->turn = !key;
             return (1);
         }
     }

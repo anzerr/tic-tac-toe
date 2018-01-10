@@ -8,7 +8,7 @@ SRC =	main.c \
 	../lib/memset.c \
 	../lib/my_nbrtostr.c
 
-NAME =	bomberman
+NAME =	server
 OBJO =	$(SRC:%.c=%.o)
 OBJC =	$(SRC)
 CFLAGS = -W -Werror -Wall

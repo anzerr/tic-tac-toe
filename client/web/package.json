@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "ws": "latest",
-    "express": "latest"
-  }
-}

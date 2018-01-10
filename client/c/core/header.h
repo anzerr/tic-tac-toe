@@ -1,9 +1,9 @@
 /*
 ** header.h for header in /home/anzer_r/project/dicowesh/anzer_r/discowesh/core
-** 
+**
 ** Made by ANZER ryan
 ** Login   <anzer_r@etna-alternance.net>
-** 
+**
 ** Started on  Fri Apr 17 10:38:11 2015 ANZER ryan
 ** Last update Sat Apr 18 12:24:36 2015 ANZER ryan
 */
@@ -26,25 +26,21 @@
 #include <string.h>
 #include <errno.h>
 
+#define MAP_SIZE 3
+
 typedef struct s_list
 {
   void *data;
   struct s_list *next;
 } t_list;
 
-typedef struct s_player
-{
-  int dead;
-  int x;
-  int y;
-} t_player;
-
 typedef struct s_core
 {
   int sockfd;
   int running;
-  int map[10][10];
-  t_player player[4];
+  int map[3][3];
+  int turn;
+  int id;
 
   t_list *cmd;
 } t_core;
@@ -58,11 +54,7 @@ typedef struct s_command
 char *my_nbrtostr(int n);
 void runGamePacket(t_core *core, char *pack);
 
-int up(t_core *core, char *line);
-int down(t_core *core, char *line);
-int left(t_core *core, char *line);
-int right(t_core *core, char *line);
-int bomb(t_core *core, char *line);
+int move(t_core *core, char *line);
 
 int my_strlen(char *str);
 void my_put_nbr(int nbr);

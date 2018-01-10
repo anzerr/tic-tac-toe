@@ -2,6 +2,7 @@
 
 t_client *initClient(t_core *core, int socket) {
     t_client *client;
+    char id[3];
     int i;
 
     i = 0;
@@ -14,6 +15,11 @@ t_client *initClient(t_core *core, int socket) {
                 client->socket = socket;
                 core->game->players[i] = client;
                 sendGameState(core);
+
+                id[0] = 'i';
+                id[1] = ',';
+                id[2] = 48 + i;
+                sendPayload(socket, id, 3);
                 return (core->game->players[i]);
             }
         }

@@ -1,5 +1,26 @@
 #include "../header.h"
 
+void displayGame(t_core *core) {
+    int x, y;
+
+    put("\n---\n");
+    x = 0;
+    while (x < 3) {
+        y = 0;
+        while (y < 3) {
+            if (core->game->map[x][y]) {
+                put((core->game->map[x][y] == 1) ? "x" : "o");
+            } else {
+                put(" ");
+            }
+            y += 1;
+        }
+        put("\n");
+        x += 1;
+    }
+    put("---\n");
+}
+
 int createMap(int ***map, int size) {
     int i;
 
@@ -28,6 +49,7 @@ t_game *initGame(t_core *core) {
         game->players[i] = NULL;
         i += 1;
     }
+    game->turn = 1;
 
     createMap(&game->map, core->size);
     i = 0;
@@ -90,8 +112,6 @@ char *mapToString(t_core *core) {
 }
 
 void sendGameState(t_core *core) {
-    // send map state and turn
-    core->game->turn = (!core->game->turn) + (socket - socket);
     char *tmp, *tmp2;
 
     tmp = mapToString(core);
@@ -174,21 +194,29 @@ void gameAction(t_core *core, int key, char *request) {
 
     put(core, request);
     put(core, "\n");
-    
+
+    my_putstr("server request :");
+    my_putstr(request);
+    my_putstr("- \n");
     if (request[0] == 't') {
         code = a_placeTick(core, key, request);
         sendGameState(core);
     }
 
+    if (core->debug) {
+        displayGame(core);
+    }
+
     hasWon(core);
     put(core, "after action\n");
 
-    if (core->game->players[key] != NULL && 0) {
+    if (core->game->players[key] != NULL) {
         put(core, (code) ? "OK\n" : "KO\n");
+        my_putstr((code) ? "OK\n" : "KO\n");
         if (code) {
-            sendPayload(core->game->players[key]->socket, "OK", 2);
+            sendPayload(core->game->players[key]->socket, "OK;", 3);
         } else {
-            sendPayload(core->game->players[key]->socket, "KO", 2);
+            sendPayload(core->game->players[key]->socket, "KO;", 3);
         }
     }
 }
