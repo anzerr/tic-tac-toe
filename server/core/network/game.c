@@ -3,22 +3,22 @@
 void displayGame(t_core *core) {
     int x, y;
 
-    put("\n---\n");
+    put(core, "\n---\n");
     x = 0;
     while (x < 3) {
         y = 0;
         while (y < 3) {
             if (core->game->map[x][y]) {
-                put((core->game->map[x][y] == 1) ? "x" : "o");
+                put(core, (core->game->map[x][y] == 1) ? "1" : "2");
             } else {
-                put(" ");
+                put(core, " ");
             }
             y += 1;
         }
-        put("\n");
+        put(core, "\n");
         x += 1;
     }
-    put("---\n");
+    put(core, "---\n");
 }
 
 int createMap(int ***map, int size) {
@@ -176,6 +176,7 @@ void hasWon(t_core *core) {
 
         if (c != 0) {
             core->running = 0;
+            put(core, (c == 1) ? "player 1 wins\n" : "player 2 wins\n");
             sendAll(core, (c == 1) ? "w,1;" : "w,2;", 5);
             return;
         }
@@ -185,6 +186,7 @@ void hasWon(t_core *core) {
 
     if (full) {
         core->running = 0;
+        put(core, "it is a draw\n");
         sendAll(core, "w,0;", 5);
     }
 }

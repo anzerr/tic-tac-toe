@@ -38,7 +38,7 @@ var bin = function(id, bin, arg) {
 
 var port = 800 + random(3000);
 
-var server = bin('0', '../build/server.exe', ['--port', port]);
+var server = bin('0', '../build/server.exe', ['--port', port, '-v']);
 
 setTimeout(function() {
 	var client = [

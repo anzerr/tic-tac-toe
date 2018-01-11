@@ -23,8 +23,8 @@ For the client the client is the same to start use this
     git clone https://github.com/anzerr/tic-tac-toe.git tic
     cd tic/lib/lib_src
     make re
-    cp libmy.a ../server
-    cd ../server
+    cp libmy.a ../../server
+    cd ../../server
     make re
     chmod server
     ./server --port 980
