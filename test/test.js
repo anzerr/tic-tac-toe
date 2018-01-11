@@ -34,7 +34,15 @@ var bin = function(id, bin, arg) {
 	return process;
 }, random = function(i) {
 	return Math.floor(Math.random() * i);
-}
+}, randomChar = function(l) {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < l; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+};
 
 var port = 800 + random(3000), win = (process.platform == 'win32');
 
@@ -55,13 +63,29 @@ setTimeout(function() {
 		var side = (s) ? '2' : '1';
 
 		if (running[side]) {
-			var msg = 't,' + random(3) + ',' + random(3) + ';\n';
+			var type = random(5), msg = 't';
+			if (type == 0) {
+				msg = 't,' + random(3) + ',' + random(3) + ';\n'; // valid 
+			}
+			if (type == 1) {
+				msg = 't,' + randomChar(1) + ',' + randomChar(1) + ';\n';
+			}
+			if (type == 2) {
+				msg = 't,' + randomChar(5) + ',' + randomChar(5) + ';\n';
+			}
+			if (type == 3) {
+				msg = 't,' + random(1000) + ',' + random(1000) + ';\n';
+			}
+			if (type == 4) {
+				msg = 't,' + (random(2000) - 1000) + ',' + (random(2000) - 1000) + ';\n';
+			}
+
 			console.log('msg ', side, s, ' send', msg);
 			client[s].stdin.write(msg, function(err, res) {
 				s = (s) ? 0 : 1;
 				setTimeout(function() {
 					run();
-				}, 200);
+				}, 100);
 			});
 
 		}

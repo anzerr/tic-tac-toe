@@ -5,7 +5,7 @@ cd ../lib/lib_src/
 make re
 cp libmy.a ../../server/
 cp libmy.a ../../client/c/
-cd ../server/
+cd ../../server/
 make re
 cp server ../build/
 cd ../client/c/
