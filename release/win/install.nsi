@@ -61,6 +61,7 @@ section "install"
 	# Files added here should be removed by the uninstaller (see section "uninstall")
 	file "client.exe"
     file "server.exe"
+	file "cygwin1.dll"
 	# Add any other files for the install directory (license files, app data, etc) here
 
 	# Uninstaller - See function un.onInit and section "uninstall" for configuration
@@ -111,6 +112,7 @@ section "uninstall"
 
 	# Remove files
 	delete $INSTDIR\client.exe
+	delete $INSTDIR\cygwin1.dll
 	delete $INSTDIR\server.exe
 
 	# Always delete uninstaller as the last action
