@@ -1,0 +1,7 @@
+Package: ttf
+Version: 1.0-1
+Section: base
+Priority: optional
+Architecture: i386
+Maintainer: no one <test@test.com>
+Description: Hello world
