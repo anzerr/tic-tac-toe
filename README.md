@@ -30,6 +30,14 @@ For the client the client is the same to start use this
     ./server --port 980
 ```
 
+#### `How to use .deb`
+here are the commands to use the .deb
+```shell
+    cd release/linux/
+    sudo dpkg -i ttf.1.0-1.deb
+    sudo apt-get remove ttf
+```
+
 #### `How to build docker image`
 Build docker image and run the server
 ```shell
