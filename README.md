@@ -37,5 +37,13 @@ Build docker image and run the server
     docker run -p 980:980 --name server tic/server:1.0
 ```
 
+#### `How to run the web client`
+The web client uses nodejs and docker
+```shell
+    cd client/web
+    npm install
+    node main.js
+```
+
 #### `WHY`
 This is shit and has no point
