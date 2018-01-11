@@ -4,6 +4,9 @@ client/web/node_modules/*
 client/web/macro/node_modules
 client/web/macro/node_modules/*
 server/debug.log
+client/c/client.exe
+server/server.exe
+client/c/client
+server/server
 
 *.o
-*.exe
