@@ -36,14 +36,14 @@ var bin = function(id, bin, arg) {
 	return Math.floor(Math.random() * i);
 }
 
-var port = 800 + random(3000);
+var port = 800 + random(3000), win = (process.platform == 'win32');
 
-var server = bin('0', '../build/server.exe', ['--port', port, '-v']);
+var server = bin('0', '../build/server' + (win ? '.exe' : ''), ['--port', port, '-v']);
 
 setTimeout(function() {
 	var client = [
-		bin('1', '../build/client.exe', ['--port', port, '--ip', '127.0.0.1']),
-		bin('2', '../build/client.exe', ['--port', port, '--ip', '127.0.0.1'])
+		bin('1', '../build/client' + (win ? '.exe' : ''), ['--port', port, '--ip', '127.0.0.1']),
+		bin('2', '../build/client' + (win ? '.exe' : ''), ['--port', port, '--ip', '127.0.0.1'])
 	]
 
 	var s = 0;

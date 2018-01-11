@@ -26,7 +26,7 @@ For the client the client is the same to start use this
     cp libmy.a ../../server
     cd ../../server
     make re
-    chmod server
+    chmod 777 server
     ./server --port 980
 ```
 
